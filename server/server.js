@@ -5,6 +5,7 @@ const path = require('path');
 // Load in other modules
 const express = require('express');
 const socketIO = require('socket.io');
+const {generateMessage} = require('./utils/message');
 
 // Set up path for Express
 const publicPath = path.join(__dirname, '../public');
@@ -26,34 +27,16 @@ io.on('connection', (socket) => {
     console.log('New user connected');
     
     // Emit Admin welcome message
-    socket.emit('newMessage', {
-        from: 'Admin',
-        text: 'Welcome to the chat app',
-        createdAt: new Date().getTime()
-    });
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app!'));
     
     // Alert everyone that a new user joined
-    socket.broadcast.emit('newMessage', {
-        from: 'Admin',
-        text: 'New user joined the chat app',
-        createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user has joined the chat.'));
     
     // Listen for createMessage from client
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
         
-        io.emit('newMessage', {
-            from: message.from,
-            text: message.text,
-            createdAt: new Date().getTime()
-        });
-        
-//        socket.broadcast.emit('newMessage', {
-//            from: message.from,
-//            text: message.text,
-//            createdAt: new Date().getTime()
-//        });
+        io.emit('newMessage', generateMessage(message.from, message.text));
     });
     
     socket.on('disconnect', () => {
