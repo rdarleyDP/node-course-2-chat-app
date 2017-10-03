@@ -6,6 +6,7 @@ const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 const {generateMessage, generateLocationMessage} = require('./utils/message');
+const {isRealString} = require('./utils/validation');
 
 // Set up path for Express
 const publicPath = path.join(__dirname, '../public');
@@ -31,6 +32,15 @@ io.on('connection', (socket) => {
     
     // Alert everyone that a new user joined
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user has joined the chat.'));
+    
+    // Listen for join
+    socket.on('join', (params, callback) => {
+        if (!isRealString(params.name) || !isRealString(params.room)) {
+            callback('Name and room name are required');
+        }
+        
+        callback();
+    });
     
     // Listen for createMessage from client
     socket.on('createMessage', (message, callback) => {
