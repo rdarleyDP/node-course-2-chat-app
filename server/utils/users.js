@@ -4,15 +4,17 @@ class Users {
     }
     
     addUser (id, name, room) {
-        var user = {id, name, room};
+        var lowerRoom = room.toLowerCase();
+        var user = {id, name, room: lowerRoom};
         this.users.push(user);
         return user;
     }
     
     checkUniqueUser (id, name, room) {
-        var newUser = {id, name, room};
+        var lowerRoom = room.toLowerCase();
+        var newUser = {id, name, room: lowerRoom};
         var existingUsers = this.users.filter((user) => {
-            return user.room === room;
+            return user.room === lowerRoom;
         });
         
         var existingNames = existingUsers.map((user) => {
@@ -22,7 +24,6 @@ class Users {
         if (!existingNames.includes(newUser.name)) {
             return true;
         } else {
-            console.log('Try again');
             return false;
         }
     }
@@ -42,8 +43,9 @@ class Users {
     }
     
     getUserList (room) {
+        var lowerRoom = room.toLowerCase();
         var users = this.users.filter((user) => {
-            return user.room === room;
+            return user.room === lowerRoom;
         });
         
         var namesArray = users.map((user) => {

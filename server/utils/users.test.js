@@ -10,17 +10,17 @@ describe('Users', () => {
         users.users = [{
             id: '1',
             name: 'Robin',
-            room: 'A'
+            room: 'a'
         },
         {
             id: '2',
             name: 'Ryan',
-            room: 'B'
+            room: 'b'
         },
         {
             id: '3',
             name: 'Izzy',
-            room: 'A'
+            room: 'a'
         }];
     });
     
@@ -34,7 +34,7 @@ describe('Users', () => {
         
         var resUser = users.addUser(user.id, user.name, user.room);
         
-        expect(users.users).toEqual([user]);
+        expect(users.users).toEqual([{"id": "123", "name": "Robin", "room": "test room"}]);
     });
     
     it('should add a unique user', () => {
