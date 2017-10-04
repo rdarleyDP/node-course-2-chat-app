@@ -38,8 +38,14 @@ io.on('connection', (socket) => {
         
         socket.join(params.room);
         
+        // Check for unique user name
+        if (!users.checkUniqueUser(socket.id, params.name, params.room)) {
+            return callback('That is not a unique name');
+        }
+        
         // Add a user to the user list
         users.removeUser(socket.id);
+        
         users.addUser(socket.id, params.name, params.room);
         
         io.to(params.room).emit('updateUserList', users.getUserList(params.room));

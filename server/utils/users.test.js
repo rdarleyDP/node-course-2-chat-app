@@ -37,10 +37,40 @@ describe('Users', () => {
         expect(users.users).toEqual([user]);
     });
     
+    it('should add a unique user', () => {
+        var uniqueUser = {
+            id: '555',
+            name: 'Violet',
+            room: 'A'
+        };
+        
+        var thisUser = users.checkUniqueUser(uniqueUser.id, uniqueUser.name, uniqueUser.room);
+        
+        console.log(thisUser);
+        
+        expect(thisUser).toBeTruthy();
+        expect(users.users.length).toBe(3);
+        
+    });
+    
+    it('should reject a duplicate name', () => {
+        var dupeUser = {
+            id: '777',
+            name: 'Robin',
+            room: 'A'
+        };
+        
+        var thisUser = users.checkUniqueUser(dupeUser.id, dupeUser.name, dupeUser.room);
+        
+        expect(thisUser).toBeFalsy();
+        expect(users.users.length).toBe(3);
+    });
+    
     it('should return names for room A', () => {
+        var thisUser = users.addUser('555', 'Violet', 'A');
         var people = users.getUserList('A');
         
-        expect(people).toEqual(['Robin', 'Izzy']);
+        expect(people).toEqual(['Robin', 'Izzy', 'Violet']);
     });
     
     it('should return names for room B', () => {

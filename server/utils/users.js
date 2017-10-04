@@ -9,6 +9,24 @@ class Users {
         return user;
     }
     
+    checkUniqueUser (id, name, room) {
+        var newUser = {id, name, room};
+        var existingUsers = this.users.filter((user) => {
+            return user.room === room;
+        });
+        
+        var existingNames = existingUsers.map((user) => {
+            return user.name;
+        });
+        
+        if (!existingNames.includes(newUser.name)) {
+            return true;
+        } else {
+            console.log('Try again');
+            return false;
+        }
+    }
+    
     removeUser (id) {
         var user = this.users.filter((user) => user.id === id)[0];
         
